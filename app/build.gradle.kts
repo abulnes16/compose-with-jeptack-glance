@@ -1,7 +1,13 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+val secretsFile = project.rootProject.file("secrets.properties")
+val properties = Properties()
+properties.load(secretsFile.inputStream())
 
 android {
     namespace = "com.abulnes16.compose_jetpack_glance"
@@ -18,6 +24,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val apiKey = properties.getProperty("API_KEY")
+        buildConfigField(type = "String", name = "API_KEY", value = apiKey)
     }
 
     buildTypes {
@@ -66,4 +75,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Retrofit & Moshi
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
 }
