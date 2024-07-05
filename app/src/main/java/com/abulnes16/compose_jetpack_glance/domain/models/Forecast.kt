@@ -5,3 +5,23 @@ data class Forecast(
     val day: String,
     val temperature: String
 )
+
+
+val mockForecastList = listOf<Forecast>(
+    Forecast(
+        weatherType = mockWeatherType,
+        day = "Lu",
+        temperature = "29",
+    ),
+    Forecast(
+        weatherType = mockWeatherType,
+        day = "Ma",
+        temperature = "29",
+    ),
+    Forecast(
+        weatherType = mockWeatherType,
+        day = "Mi",
+        temperature = "29",
+    ),
+
+)

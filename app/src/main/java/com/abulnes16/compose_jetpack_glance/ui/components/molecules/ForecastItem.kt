@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.abulnes16.compose_jetpack_glance.R
 import com.abulnes16.compose_jetpack_glance.domain.models.Forecast
 import com.abulnes16.compose_jetpack_glance.domain.models.WeatherType
+import com.abulnes16.compose_jetpack_glance.domain.models.mockForecastList
+import com.abulnes16.compose_jetpack_glance.ui.theme.Compose_Jetpack_GlanceTheme
 
 @Composable
 fun ForecastItem(forecast: Forecast, modifier: Modifier = Modifier) {
@@ -40,7 +42,7 @@ fun ForecastItem(forecast: Forecast, modifier: Modifier = Modifier) {
                 tint = weatherColor
             )
             Text(text = forecast.day)
-            Text(text = "${forecast.temperature} °C", style = MaterialTheme.typography.titleMedium)
+            Text(text = "${forecast.temperature} °C", style = MaterialTheme.typography.titleSmall)
         }
     }
 }
@@ -49,11 +51,10 @@ fun ForecastItem(forecast: Forecast, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun ForecastItemPreview() {
-    ForecastItem(
-        Forecast(
-            WeatherType(R.drawable.ic_baseline_wb_cloudy, MaterialTheme.colorScheme.primary),
-            "Lu",
-            "25"
+    Compose_Jetpack_GlanceTheme {
+        ForecastItem(
+            forecast = mockForecastList.first()
         )
-    )
+    }
+
 }

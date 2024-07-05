@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.abulnes16.compose_jetpack_glance.domain.models.Weather
 import com.abulnes16.compose_jetpack_glance.R
 import com.abulnes16.compose_jetpack_glance.domain.models.WeatherType
+import com.abulnes16.compose_jetpack_glance.domain.models.mockWeather
+import com.abulnes16.compose_jetpack_glance.ui.theme.Compose_Jetpack_GlanceTheme
 
 @Composable
 fun WeatherItem(weather: Weather, modifier: Modifier = Modifier) {
@@ -49,11 +51,11 @@ fun WeatherItem(weather: Weather, modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = "${weather.temperature} °C",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
                     text = "${weather.city} ${weather.country}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -85,7 +87,7 @@ fun WeatherItem(weather: Weather, modifier: Modifier = Modifier) {
                     )
                     Text(
                         text = "Wind ${weather.wind} m/s",
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(horizontal = 5.dp)
                     )
                 }
@@ -97,14 +99,10 @@ fun WeatherItem(weather: Weather, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun WeatherItemPreview() {
-    WeatherItem(
-        Weather(
-            weatherType = WeatherType(R.drawable.ic_baseline_snow, MaterialTheme.colorScheme.secondary),
-            temperature = 19.0,
-            city = "Tegucigalpa",
-            country = "HN",
-            humidity = 77.0,
-            wind = 2.06
+    Compose_Jetpack_GlanceTheme {
+        WeatherItem(
+           weather = mockWeather
         )
-    )
+    }
+
 }
