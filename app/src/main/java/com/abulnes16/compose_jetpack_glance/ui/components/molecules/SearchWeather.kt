@@ -30,22 +30,21 @@ import com.abulnes16.compose_jetpack_glance.ui.theme.Compose_Jetpack_GlanceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchWeather(modifier: Modifier = Modifier) {
+fun SearchWeather(
+    city: String,
+    onValueChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.padding(10.dp)
     ) {
 
         OutlinedTextField(
-            value = "",
-            onValueChange = { },
+            value = city,
+            onValueChange = onValueChange,
             maxLines = 1,
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.White,
-                textColor = Color.Black,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground,
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary
-            ),
             modifier = Modifier
                 .padding(horizontal = 5.dp)
                 .fillMaxWidth(0.6f)
@@ -63,11 +62,11 @@ fun SearchWeather(modifier: Modifier = Modifier) {
                 }
 
             },
-            keyboardActions = KeyboardActions(onDone = {  }),
+            keyboardActions = KeyboardActions(onDone = { }),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
         )
         Button(
-            onClick = {},
+            onClick = onSearch,
             shape = RoundedCornerShape(50.dp),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             modifier = Modifier.height(50.dp)
@@ -84,6 +83,6 @@ fun SearchWeather(modifier: Modifier = Modifier) {
 @Composable
 fun SearchWeatherPreview() {
     Compose_Jetpack_GlanceTheme {
-        SearchWeather()
+        SearchWeather(city = "Tegucigalpa", onSearch = {}, onValueChange = {})
     }
 }

@@ -1,5 +1,6 @@
 package com.abulnes16.compose_jetpack_glance.utils
 
+import com.abulnes16.compose_jetpack_glance.BuildConfig
 import com.abulnes16.compose_jetpack_glance.R
 import com.abulnes16.compose_jetpack_glance.domain.models.WeatherType
 import com.abulnes16.compose_jetpack_glance.domain.models.WeatherTypes
@@ -50,4 +51,8 @@ fun getWeekOfDay(date: Long): String {
     val dateObj = Date(date * 1000)
     return SimpleDateFormat("E", Locale.ENGLISH).format(dateObj)
         .replaceFirstChar { it.uppercase() }
+}
+
+fun createWeatherUrl(resource: String, query: String): String{
+    return "${resource}?${query}&appId=${BuildConfig.API_KEY}"
 }

@@ -1,6 +1,5 @@
 package com.abulnes16.compose_jetpack_glance.data.remote.dto
 
-import com.squareup.moshi.Json
 
 data class Coordinates(
     val lat: Double,
@@ -23,12 +22,9 @@ data class WeatherInfo(
 
 data class Temperature(
     val temp: Double,
-    @field:Json(name = "feels_like")
-    val feelsLike: Double,
-    @field:Json(name = "temp_min")
-    val tempMin: Double,
-    @field:Json(name = "temp_max")
-    val tempMax: Double,
+    val feels_like: Double,
+    val temp_min: Double,
+    val temp_max: Double,
     val pressure: Double,
     val humidity: Double
 )
