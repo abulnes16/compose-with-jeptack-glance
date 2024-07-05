@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.abulnes16.compose_jetpack_glance.ui.components.atoms.Logo
@@ -21,8 +22,10 @@ import com.abulnes16.compose_jetpack_glance.ui.theme.Spacing
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.abulnes16.compose_jetpack_glance.R
 import com.abulnes16.compose_jetpack_glance.domain.models.FetchState
+import com.abulnes16.compose_jetpack_glance.domain.use_cases.GetUserLocation
 import com.abulnes16.compose_jetpack_glance.ui.TempoViewModelFactory
 import com.abulnes16.compose_jetpack_glance.ui.components.molecules.ErrorMessage
+import com.abulnes16.compose_jetpack_glance.ui.modules.permissions.RequestLocationPermission
 
 @Composable
 fun HomeScreen(
@@ -30,11 +33,29 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = TempoViewModelFactory),
 ) {
 
+    val context = LocalContext.current
+
     val state = viewModel.state
 
-    LaunchedEffect(Unit){
-        viewModel.onEvent(HomeEvents.OnSearch)
-    }
+    RequestLocationPermission(
+        onPermissionGranted = {
+            GetUserLocation.getCurrentLocation(
+                context = context,
+                onGetCurrentLocationSuccess = { coordinates ->
+                    val (lat, lon) = coordinates
+                    viewModel.onEvent(
+                        HomeEvents.OnFetchWeatherByLocation(
+                            latitude = lat,
+                            longitude = lon
+                        )
+                    )
+                },
+                onGetCurrentLocationFailed = {}
+            )
+        },
+        onPermissionDenied = {},
+        onPermissionsRevoked = {}
+    )
 
 
     Column(
@@ -54,9 +75,11 @@ fun HomeScreen(
                 WeatherSection(weather = state.weather!!)
                 ForecastList(forecast = state.weeklyForecast)
             }
+
             FetchState.LOADING -> {
                 CircularProgressIndicator()
             }
+
             FetchState.ERROR -> {
                 ErrorMessage()
                 Button(onClick = { viewModel.onEvent(HomeEvents.OnSearch) }) {

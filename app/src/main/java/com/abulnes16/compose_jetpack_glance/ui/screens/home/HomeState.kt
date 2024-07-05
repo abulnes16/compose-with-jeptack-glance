@@ -5,7 +5,7 @@ import com.abulnes16.compose_jetpack_glance.domain.models.Forecast
 import com.abulnes16.compose_jetpack_glance.domain.models.Weather
 
 data class HomeState(
-    val cityName: String = "tegucigalpa",
+    val cityName: String = "",
     val weather: Weather? = null,
     val weeklyForecast: List<Forecast> = listOf(),
     val fetchState: FetchState = FetchState.LOADING
