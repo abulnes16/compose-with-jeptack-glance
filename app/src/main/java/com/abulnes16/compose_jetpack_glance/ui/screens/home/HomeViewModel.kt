@@ -32,6 +32,14 @@ class HomeViewModel(private val tempoUseCases: TempoUseCases) : ViewModel() {
                     initialCoordinates = Coordinates(event.latitude, event.longitude)
                 )
             }
+
+            is HomeEvents.OnRetryFetchLocation -> {
+                state = state.copy(locationError = true)
+            }
+
+            is HomeEvents.OnPermissionDenied -> {
+                state = state.copy(permissionDenied = true)
+            }
         }
     }
 
@@ -48,7 +56,7 @@ class HomeViewModel(private val tempoUseCases: TempoUseCases) : ViewModel() {
                         val (weather, coordinates) = response
                         val (lat, lon) = coordinates
                         fetchForecast(lat, lon)
-                        state = state.copy(weather = weather, fetchState = FetchState.SUCCESS)
+                        state = state.copy(weather = weather, fetchState = FetchState.SUCCESS, locationError = false)
                     }.onFailure {
                         Log.e("[FETCH WEATHER]", it.message ?: "Error fetching weather")
                         state = state.copy(fetchState = FetchState.ERROR)
@@ -65,7 +73,7 @@ class HomeViewModel(private val tempoUseCases: TempoUseCases) : ViewModel() {
         viewModelScope.launch {
             try {
                 tempoUseCases.getForecast(latitude, longitude).onSuccess {
-                    state = state.copy(weeklyForecast = it, fetchState = FetchState.SUCCESS)
+                    state = state.copy(weeklyForecast = it, fetchState = FetchState.SUCCESS, locationError = false)
                 }.onFailure {
                     Log.e("[FETCH FORECAST]", it.message ?: "Error fetching forecast")
                     state = state.copy(fetchState = FetchState.ERROR)

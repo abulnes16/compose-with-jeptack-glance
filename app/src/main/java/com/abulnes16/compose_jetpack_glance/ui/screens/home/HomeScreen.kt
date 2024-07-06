@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,24 +37,35 @@ fun HomeScreen(
 
     val state = viewModel.state
 
+    val onSuccessLocation: (Pair<Double, Double>) -> Unit = { coordinates ->
+        val (lat, lon) = coordinates
+        viewModel.onEvent(
+            HomeEvents.OnFetchWeatherByLocation(
+                latitude = lat,
+                longitude = lon
+            )
+        )
+    }
+
+    val onFailedLocation: (Exception) -> Unit = {
+        viewModel.onEvent(HomeEvents.OnRetryFetchLocation)
+    }
+
+    val onPermissionDenied = {
+        viewModel.onEvent(HomeEvents.OnPermissionDenied)
+    }
+
+
     RequestLocationPermission(
         onPermissionGranted = {
             GetUserLocation.getCurrentLocation(
                 context = context,
-                onGetCurrentLocationSuccess = { coordinates ->
-                    val (lat, lon) = coordinates
-                    viewModel.onEvent(
-                        HomeEvents.OnFetchWeatherByLocation(
-                            latitude = lat,
-                            longitude = lon
-                        )
-                    )
-                },
-                onGetCurrentLocationFailed = {}
+                onGetCurrentLocationSuccess = onSuccessLocation,
+                onGetCurrentLocationFailed = onFailedLocation,
             )
         },
-        onPermissionDenied = {},
-        onPermissionsRevoked = {}
+        onPermissionDenied = onPermissionDenied,
+        onPermissionsRevoked = onPermissionDenied
     )
 
 
@@ -70,23 +81,49 @@ fun HomeScreen(
             onValueChange = { viewModel.onEvent(HomeEvents.OnChangeCity(it)) },
             onSearch = { viewModel.onEvent(HomeEvents.OnSearch) }
         )
-        when (state.fetchState) {
-            FetchState.SUCCESS -> {
-                WeatherSection(weather = state.weather!!)
-                ForecastList(forecast = state.weeklyForecast)
+
+        if (state.permissionDenied) {
+            ErrorMessage(text = stringResource(id = R.string.missing_location_permission))
+            Text(
+                text = stringResource(id = R.string.missing_location_permission_message),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        } else if (state.locationError) {
+            ErrorMessage(text = stringResource(id = R.string.fetch_location_failed))
+            Text(
+                text = stringResource(id = R.string.fetch_location_failed_message),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Button(onClick = {
+                GetUserLocation.getCurrentLocation(
+                    context,
+                    onSuccessLocation,
+                    onFailedLocation
+                )
+            }) {
+                Text(text = stringResource(id = R.string.try_again))
             }
 
-            FetchState.LOADING -> {
-                CircularProgressIndicator()
-            }
+        } else {
+            when (state.fetchState) {
+                FetchState.SUCCESS -> {
+                    WeatherSection(weather = state.weather!!)
+                    ForecastList(forecast = state.weeklyForecast)
+                }
 
-            FetchState.ERROR -> {
-                ErrorMessage()
-                Button(onClick = { viewModel.onEvent(HomeEvents.OnSearch) }) {
-                    Text(text = stringResource(id = R.string.try_again))
+                FetchState.LOADING -> {
+                    CircularProgressIndicator()
+                }
+
+                FetchState.ERROR -> {
+                    ErrorMessage()
+                    Button(onClick = { viewModel.onEvent(HomeEvents.OnSearch) }) {
+                        Text(text = stringResource(id = R.string.try_again))
+                    }
                 }
             }
         }
+
 
     }
 }

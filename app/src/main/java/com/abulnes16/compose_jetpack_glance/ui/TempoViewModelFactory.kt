@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.abulnes16.compose_jetpack_glance.data.remote.Api
 import com.abulnes16.compose_jetpack_glance.domain.use_cases.GetForecast
+import com.abulnes16.compose_jetpack_glance.domain.use_cases.GetUserLocation
 import com.abulnes16.compose_jetpack_glance.domain.use_cases.GetWeather
 import com.abulnes16.compose_jetpack_glance.domain.use_cases.TempoUseCases
 import com.abulnes16.compose_jetpack_glance.ui.screens.home.HomeViewModel
@@ -20,7 +21,8 @@ val TempoViewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(HomeViewModel::class.java) -> {
                     val tempoUseCases = TempoUseCases(
                         getWeather = GetWeather(api = Api),
-                        getForecast = GetForecast(api = Api)
+                        getForecast = GetForecast(api = Api),
+                        getCurrentLocation = GetUserLocation,
                     )
                     HomeViewModel(tempoUseCases)
                 }

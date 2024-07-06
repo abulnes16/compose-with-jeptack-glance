@@ -5,4 +5,8 @@ sealed class HomeEvents {
     object OnSearch: HomeEvents()
 
     data class OnFetchWeatherByLocation(val latitude: Double, val longitude: Double): HomeEvents()
+
+    object OnRetryFetchLocation: HomeEvents()
+
+    object OnPermissionDenied: HomeEvents()
 }

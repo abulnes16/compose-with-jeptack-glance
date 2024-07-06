@@ -8,4 +8,10 @@
     <string name="weekly_forecast">Weekly Forecast</string>
     <string name="blank_error">The city name can\'t be blank</string>
     <string name="try_again">Try again</string>
+
+    <!--Error handling-->
+    <string name="fetch_location_failed">Fetch Location Failed</string>
+    <string name="fetch_location_failed_message">We couldn\'nt get your current location, please try again</string>
+    <string name="missing_location_permission">Permissions needed</string>
+    <string name="missing_location_permission_message">Please activate your permissions in Settings in order to show the correct location</string>
 </resources>

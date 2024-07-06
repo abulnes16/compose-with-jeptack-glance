@@ -8,5 +8,7 @@ data class HomeState(
     val cityName: String = "",
     val weather: Weather? = null,
     val weeklyForecast: List<Forecast> = listOf(),
-    val fetchState: FetchState = FetchState.LOADING
+    val fetchState: FetchState = FetchState.LOADING,
+    val locationError: Boolean = false,
+    val permissionDenied: Boolean = false,
 )
