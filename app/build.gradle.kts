@@ -90,6 +90,7 @@ dependencies {
 
    // For AppWidgets support
     implementation("androidx.glance:glance-appwidget:1.1.0")
+    implementation("androidx.glance:glance-preview:1.1.0")
 
 
 
