@@ -3,6 +3,7 @@ package com.abulnes16.compose_jetpack_glance.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.abulnes16.compose_jetpack_glance.TempoApplication
 import com.abulnes16.compose_jetpack_glance.data.remote.Api
 import com.abulnes16.compose_jetpack_glance.domain.use_cases.GetForecast
 import com.abulnes16.compose_jetpack_glance.domain.use_cases.GetUserLocation
@@ -24,8 +25,12 @@ val TempoViewModelFactory = object : ViewModelProvider.Factory {
                         getForecast = GetForecast(api = Api),
                         getCurrentLocation = GetUserLocation,
                     )
-                    HomeViewModel(tempoUseCases)
+                    HomeViewModel(
+                        tempoUseCases,
+                        repository = TempoApplication.instance.weatherRepository,
+                    )
                 }
+
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

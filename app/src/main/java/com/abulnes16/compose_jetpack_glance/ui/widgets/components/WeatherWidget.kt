@@ -9,6 +9,8 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
@@ -20,14 +22,16 @@ import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.abulnes16.compose_jetpack_glance.MainActivity
 import com.abulnes16.compose_jetpack_glance.R
+import com.abulnes16.compose_jetpack_glance.data.database.models.WeatherDB
 import com.abulnes16.compose_jetpack_glance.ui.theme.Spacing
 
 
 @Composable
-fun WeatherWidget(modifier: GlanceModifier = GlanceModifier) {
+fun WeatherWidget(weatherDB: WeatherDB, modifier: GlanceModifier = GlanceModifier) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().clickable(actionStartActivity<MainActivity>()),
         verticalAlignment = Alignment.Vertical.CenterVertically,
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
@@ -41,11 +45,11 @@ fun WeatherWidget(modifier: GlanceModifier = GlanceModifier) {
         )
 
         Text(
-            text = "Tegucigalpa",
+            text = weatherDB.city,
             style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 18.sp)
         )
         Text(
-            text = "23°C",
+            text = "${weatherDB.temperature}°C",
             style = TextStyle(
                 color = GlanceTheme.colors.onSurface,
                 fontSize = 24.sp,
@@ -64,7 +68,10 @@ fun WeatherWidget(modifier: GlanceModifier = GlanceModifier) {
                     modifier = GlanceModifier.size(14.dp)
                 )
                 Spacer(modifier = GlanceModifier.width(Spacing.md))
-                Text(text = "10%", style = TextStyle(color = GlanceTheme.colors.onSurface))
+                Text(
+                    text = "${weatherDB.humidity} %",
+                    style = TextStyle(color = GlanceTheme.colors.onSurface)
+                )
             }
             Spacer(modifier = GlanceModifier.width(Spacing.md))
             Row(verticalAlignment = Alignment.Vertical.CenterVertically) {
@@ -77,7 +84,10 @@ fun WeatherWidget(modifier: GlanceModifier = GlanceModifier) {
                     modifier = GlanceModifier.size(14.dp)
                 )
                 Spacer(modifier = GlanceModifier.width(Spacing.md))
-                Text(text = "5 m/s", style = TextStyle(color = GlanceTheme.colors.onSurface))
+                Text(
+                    text = "${weatherDB.wind} m/s",
+                    style = TextStyle(color = GlanceTheme.colors.onSurface)
+                )
             }
         }
     }

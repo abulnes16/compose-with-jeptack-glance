@@ -3,7 +3,11 @@ package com.abulnes16.compose_jetpack_glance.domain.models
 
 import androidx.compose.ui.graphics.Color
 import com.abulnes16.compose_jetpack_glance.R
+import com.abulnes16.compose_jetpack_glance.data.database.models.WeatherDB
+import com.abulnes16.compose_jetpack_glance.data.remote.dto.WeatherResponse
 import com.abulnes16.compose_jetpack_glance.ui.theme.Primary
+import com.abulnes16.compose_jetpack_glance.utils.convertTemperature
+import com.abulnes16.compose_jetpack_glance.utils.getWeatherType
 
 data class WeatherType(
     val weatherIcon: Int,
@@ -28,3 +32,15 @@ val mockWeather = Weather(
     humidity = 10.0,
     wind = 2.5
 )
+
+fun Weather.toWeatherDB(): WeatherDB {
+    return WeatherDB(
+        id = 0,
+        city = city,
+        country = country,
+        humidity = humidity,
+        temperature = temperature,
+        wind = wind,
+        weatherIcon = weatherType.weatherIcon
+    )
+}

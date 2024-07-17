@@ -1,5 +1,6 @@
 package com.abulnes16.compose_jetpack_glance.data.mapper
 
+import com.abulnes16.compose_jetpack_glance.data.database.models.WeatherDB
 import com.abulnes16.compose_jetpack_glance.data.remote.dto.WeatherResponse
 import com.abulnes16.compose_jetpack_glance.domain.models.Weather
 import com.abulnes16.compose_jetpack_glance.utils.convertTemperature
@@ -20,5 +21,5 @@ fun WeatherResponse.toWeather(): Weather {
         wind = wind,
         weatherType = weatherType
     )
-
 }
+
