@@ -36,7 +36,7 @@ fun WeatherWidget(weatherDB: WeatherDB, modifier: GlanceModifier = GlanceModifie
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
         Image(
-            provider = ImageProvider(R.drawable.ic_baseline_wb_sunny),
+            provider = ImageProvider(weatherDB.weatherIcon),
             colorFilter = ColorFilter.tint(
                 GlanceTheme.colors.secondary
             ),
