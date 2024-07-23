@@ -93,6 +93,10 @@ dependencies {
    // For AppWidgets support
     implementation("androidx.glance:glance-appwidget:1.1.0")
     implementation("androidx.glance:glance-preview:1.1.0")
+    // For interop APIs with Material 3
+    implementation("androidx.glance:glance-material3:1.1.0"){
+        exclude(group = "com.google.android.material", module = "material")
+    }
 
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
@@ -100,6 +104,12 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.compose.material3:material3:1.2.1")
+
+        }
+    }
 
 
 

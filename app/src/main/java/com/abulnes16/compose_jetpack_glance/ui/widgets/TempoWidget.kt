@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.glance.GlanceId
 import androidx.glance.GlanceTheme
-
 import androidx.glance.ImageProvider
 import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
@@ -14,8 +13,8 @@ import androidx.glance.appwidget.components.TitleBar
 import androidx.glance.appwidget.provideContent
 import com.abulnes16.compose_jetpack_glance.R
 import com.abulnes16.compose_jetpack_glance.TempoApplication
-import com.abulnes16.compose_jetpack_glance.data.database.models.WeatherDB
 import com.abulnes16.compose_jetpack_glance.ui.widgets.components.WeatherWidget
+import com.abulnes16.compose_jetpack_glance.ui.widgets.theme.TempoWidgetsTheme
 
 
 class TempoWidget : GlanceAppWidget() {
@@ -30,14 +29,14 @@ class TempoWidget : GlanceAppWidget() {
                 initial = null
             )
 
-            GlanceTheme {
+            GlanceTheme(colors = TempoWidgetsTheme.colors) {
                 Scaffold(
-                    backgroundColor = GlanceTheme.colors.widgetBackground,
+                    backgroundColor = GlanceTheme.colors.background,
                     titleBar = {
                         TitleBar(
                             startIcon = ImageProvider(R.drawable.tempo_logo),
                             iconColor = GlanceTheme.colors.primary,
-                            title = "Current Weather",
+                            title = context.getString(R.string.current_weather),
                             textColor = GlanceTheme.colors.onSurface
                         )
                     }) {

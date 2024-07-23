@@ -30,6 +30,8 @@ fun getWeatherType(weatherType: String): WeatherType {
         else -> R.drawable.ic_baseline_air
     }
 
+
+
     val weatherColor = when (weatherType) {
         WeatherTypes.Sun.weatherName -> Secondary
 
@@ -44,12 +46,12 @@ fun getWeatherType(weatherType: String): WeatherType {
 
     }
 
-    return WeatherType(weatherIcon = weatherIcon, weatherColor = weatherColor)
+    return WeatherType(weatherIcon = weatherIcon, weatherColor = weatherColor, weatherName = weatherType)
 }
 
 fun getWeekOfDay(date: Long): String {
     val dateObj = Date(date * 1000)
-    return SimpleDateFormat("E", Locale.ENGLISH).format(dateObj)
+    return SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateObj)
         .replaceFirstChar { it.uppercase() }
 }
 
